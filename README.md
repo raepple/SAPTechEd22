@@ -1,0 +1,41 @@
+# Description
+This is the sample code for session XP160 at SAP TechEd 2022.
+
+# Deployment on Cloud Foundry
+To deploy the application, the following steps are required:
+- Compile the Java application
+- Create the IAS service instance
+- Create the XSUAA service instance
+- Create the destination service instance
+- Deploy the application 
+
+## Compile the Java application
+Run maven to package the application
+```shell
+mvn clean package
+```
+
+## Create the identity service instance for obtaining the 
+Use the ias service broker and create a service instance (don't forget to replace the placeholders)
+```shell
+cf create-service identity application ias-iasaaddemo
+```
+
+## Create the xsuaa service instance
+Use the [xs-security.json](./xs-security.json) to define the authentication settings and create a service instance
+```shell
+cf create-service xsuaa application xsuaa-iasaaddemo -c xs-security.json
+```
+
+## Create the destination service instance
+Use the destination service broker to create a service instance
+```shell
+cf create-service destination lite destination-iasaaddemo
+```
+
+## Deploy the application
+Deploy the application using cf push. It will expect 1 GB of free memory quota.
+
+```shell
+cf push
+```

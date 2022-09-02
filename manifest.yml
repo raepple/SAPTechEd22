@@ -1,0 +1,32 @@
+---
+applications:
+- name: iasaaddemo
+  memory: 1500M
+  routes:
+    - route: iasaaddemo.cfapps.eu12.hana.ondemand.com
+  timeout: 300
+  random-route: true
+  path: application/target/iasaaddemo-application.war
+  buildpacks:
+    - sap_java_buildpack
+  env:
+    TARGET_RUNTIME: tomee7
+    SET_LOGGING_LEVEL: '{ROOT: DEBUG, com.sap.cloud.sdk: DEBUG}'
+    JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
+  services:
+    - name: ias-iasaaddemo
+      parameters: { "credential-type": "SECRET" }
+    - name: xsuaa-iasaaddemo
+    - name: destination-iasaaddemo
+- name: approuter-iasaaddemo
+  routes:
+    - route: approuter-iasaaddemo.cfapps.eu12.hana.ondemand.com
+  path: approuter
+  memory: 128M
+  buildpacks:
+    - nodejs_buildpack
+  env:
+    TENANT_HOST_PATTERN: 'approuter-(.*).cfapps.eu12.hana.ondemand.com'
+    destinations: '[{"name":"app-destination", "url":"https://iasaaddemo.cfapps.eu12.hana.ondemand.com", "forwardAuthToken": true}]'
+  services:
+    - xsuaa-iasaaddemo

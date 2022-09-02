@@ -1,0 +1,28 @@
+{
+    "xsappname": "aadiasdemo",
+    "tenant-mode": "dedicated",
+    "scopes": [
+      {
+        "name": "$XSAPPNAME.Display",
+        "description": "display"
+      }
+    ],
+    "role-templates": [
+      {
+        "name": "Viewer",
+        "description": "Required to view meetings",
+        "scope-references"     : [
+          "$XSAPPNAME.Display"
+        ]
+      }
+    ],
+    "role-collections": [{
+		"name": "XP160_Demo_Viewer",
+		"description": "Role Collection to call the XP160 Demo App",
+		"role-template-references": [
+			"$XSAPPNAME.Viewer"
+		]
+	}
+	]
+  }
+  
