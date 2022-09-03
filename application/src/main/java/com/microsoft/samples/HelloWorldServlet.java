@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -43,19 +44,38 @@ public class HelloWorldServlet extends HttpServlet
         AuthToken xsuaaToken = AuthTokenAccessor.getCurrentToken();
         
         response.getWriter().append("Hello " + xsuaaToken.getJwt().getClaim("email").asString() + "\n");
-        response.getWriter().append("Your XSUAA Token: " + xsuaaToken.getJwt().getToken() + "\n");
+        response.getWriter().append("Your IAS Token: " + xsuaaToken.getJwt().getToken() + "\n");
         
+        // Step 5: Client Assertion Request
         HttpDestination tokenServiceDest = DestinationAccessor.getDestination("tokenService").asHttp();
         HttpClient client = HttpClientAccessor.getHttpClient(tokenServiceDest);
         URI uri = tokenServiceDest.getUri();
-        HttpPost iasTokenExchangeRequest = new HttpPost(uri);
+        HttpPost iasClientAssertionRequest = new HttpPost(uri);
         
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("grant_type", "client_credentials"));
         params.add(new BasicNameValuePair("resource", "urn:sap:identity:corporateidp"));
-        iasTokenExchangeRequest.setEntity(new UrlEncodedFormEntity(params));
+        iasClientAssertionRequest.setEntity(new UrlEncodedFormEntity(params));
 
-        HttpResponse iasTokenExchangeResponse = client.execute(iasTokenExchangeRequest);
-        response.getWriter().append("Response from Client Assertion request: " + iasTokenExchangeResponse.getStatusLine().getStatusCode());
+        HttpResponse iasTokenExchangeResponse = client.execute(iasClientAssertionRequest);
+        response.getWriter().append("Response code from Client Assertion request: " + iasTokenExchangeResponse.getStatusLine().getStatusCode());
+        String body = IOUtils.toString(iasTokenExchangeResponse.getEntity().getContent(), "UTF-8");
+        response.getWriter().append("Response body: " + body);
+
+        // Step 6: BTP Application Token Request
+        HttpDestination tokenExchangeDest = DestinationAccessor.getDestination("tokenExchange").asHttp();
+        client = HttpClientAccessor.getHttpClient(tokenExchangeDest);
+        uri = tokenExchangeDest.getUri();
+        HttpPost iasTokenExchangeRequest = new HttpPost(uri);
+
+        params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("grant_type", "client_credentials"));
+        params.add(new BasicNameValuePair("resource", "urn:sap:identity:corporateidp"));
+        iasClientAssertionRequest.setEntity(new UrlEncodedFormEntity(params));
+
+
+        // Step 7: Token Exchange BTP Application Token for Graph Token
+
+        // Step 8: Call Graph API
     }
 }

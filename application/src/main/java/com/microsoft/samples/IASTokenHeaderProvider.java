@@ -26,7 +26,7 @@ public class IASTokenHeaderProvider implements DestinationHeaderProvider {
     public List<Header> getHeaders( @Nonnull final DestinationRequestContext requestContext )
     {
         final Header header;
-        if (requestContext.getDestination().get("name").contains("tokenService")) {
+        if (requestContext.getDestination().get("name").contains("token")) {
             logger.debug("Adding authz header for IAS request");
             header = new Header("Authorization", obtainIASCredentials());    
             return Collections.singletonList(header);

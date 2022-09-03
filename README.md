@@ -22,7 +22,7 @@ cf create-service identity application ias-iasaaddemo
 ```
 
 ## Create the xsuaa service instance
-Use the [xs-security.json](./xs-security.json) to define the authentication settings and create a service instance
+Use the [xs-security.json](./xs-security.json) to define the #authentication settings and create a service instance
 ```shell
 cf create-service xsuaa application xsuaa-iasaaddemo -c xs-security.json
 ```

@@ -16,7 +16,6 @@ applications:
   services:
     - name: ias-iasaaddemo
       parameters: { "credential-type": "SECRET" }
-    - name: xsuaa-iasaaddemo
     - name: destination-iasaaddemo
 - name: approuter-iasaaddemo
   routes:
@@ -26,7 +25,6 @@ applications:
   buildpacks:
     - nodejs_buildpack
   env:
-    TENANT_HOST_PATTERN: 'approuter-(.*).cfapps.eu12.hana.ondemand.com'
     destinations: '[{"name":"app-destination", "url":"https://iasaaddemo.cfapps.eu12.hana.ondemand.com", "forwardAuthToken": true}]'
   services:
-    - xsuaa-iasaaddemo
+    - ias-iasaaddemo
