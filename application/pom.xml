@@ -61,6 +61,12 @@
             <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
             <artifactId>scp-cf</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.sap.cloud.sdk.cloudplatform</groupId>
+            <artifactId>cloudplatform-connectivity</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.sap.cloud.sdk.s4hana</groupId>
             <artifactId>s4hana-all</artifactId>
@@ -108,6 +114,7 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+    
     </dependencies>
 
     <build>
