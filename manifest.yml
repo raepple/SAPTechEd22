@@ -11,7 +11,7 @@ applications:
     - sap_java_buildpack
   env:
     TARGET_RUNTIME: tomee7
-    SET_LOGGING_LEVEL: '{ROOT: DEBUG, com.sap.cloud.sdk: DEBUG}'
+    SET_LOGGING_LEVEL: '{ROOT: INFO, com.sap.cloud.sdk: INFO}'
     JBP_CONFIG_SAPJVM_MEMORY_SIZES: 'metaspace:128m..'
   services:
     - name: ias-iasaaddemo
