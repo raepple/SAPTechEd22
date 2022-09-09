@@ -1,12 +1,7 @@
 package com.microsoft.samples;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -60,9 +55,6 @@ public class CalendarServlet extends HttpServlet {
         while(eventsPage != null) {
             for (Event event: eventsPage.getCurrentPage()) {
                 JSONObject eventJSON = new JSONObject();
-                LocalDateTime date = LocalDateTime.parse(event.start.dateTime);
-                DateTimeFormatter.ISO_OFFSET_DATE.format(date.atZone(ZoneId.of("UTC-3"))).toString();
-                // date.format(DateTimeFormatter.ISO_OFFSET_DATE.format(date.atZone(ZoneId.of("UTC-3"))));
                 eventJSON.put("subject", event.subject);
                 eventJSON.put("organizer", event.organizer.emailAddress.address);
                 eventJSON.put("start", String.format("%s %s", LocalDateTime.parse(event.start.dateTime).toLocalDate().toString(), LocalDateTime.parse(event.start.dateTime).toLocalTime().toString()));

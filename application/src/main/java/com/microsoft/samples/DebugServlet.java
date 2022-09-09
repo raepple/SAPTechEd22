@@ -1,25 +1,15 @@
 package com.microsoft.samples;
 
 import java.io.IOException;
-import java.net.URI;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.JsonObject;
-import com.sap.cloud.sdk.cloudplatform.ScpCfCloudPlatform;
-import com.sap.cloud.sdk.cloudplatform.connectivity.DestinationAccessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpClientAccessor;
-import com.sap.cloud.sdk.cloudplatform.connectivity.HttpDestination;
 import com.sap.cloud.sdk.cloudplatform.security.AuthToken;
 import com.sap.cloud.sdk.cloudplatform.security.AuthTokenAccessor;
 
@@ -51,15 +41,15 @@ public class DebugServlet extends HttpServlet
         response.getWriter().append("\nYour IAS Token: " + iasToken.getJwt().getToken());
 
         String clientAssertion = TokenRequestHelper.requestAADFederatedClientCredentialViaOIDCProxy(IAS_TOKEN_ENDPOINT_DESTINATION);
-        response.getWriter().append("\n\nClient Assertion from Azure AD:\n" + TokenRequestHelper.decodePayload(clientAssertion));
+        response.getWriter().append("\n\nClient Assertion from Azure AD:\n" + clientAssertion);
    
         String aadIASAccessToken = TokenRequestHelper.exchangeIASTokenViaOIDCProxy(IAS_TOKEN_EXCHANGE_DESTINATION, iasToken);
-        response.getWriter().append("\n\nAzure AD access token for IAS application:\n" + TokenRequestHelper.decodePayload(aadIASAccessToken));
+        response.getWriter().append("\n\nAzure AD access token for IAS application:\n" + aadIASAccessToken);
 
         String aadDemoAppAccessToken = TokenRequestHelper.exchangeAADTokenWithFederatedClientCredential(AAD_TOKEN_ENDPOINT_DESTINATION, aadIASAccessToken, clientAssertion, AAD_IASAPP_CLIENT_ID, AAD_DEMOAPP_DEFAULT_SCOPE);
-        response.getWriter().append("\n\nAzure AD access token for Demo application:\n" + TokenRequestHelper.decodePayload(aadDemoAppAccessToken));
+        response.getWriter().append("\n\nAzure AD access token for Demo application:\n" + aadDemoAppAccessToken);
 
         String graphTokenAccessToken = TokenRequestHelper.exchangeAADTokenWithFederatedClientCredential(AAD_TOKEN_ENDPOINT_DESTINATION, aadDemoAppAccessToken, clientAssertion, AAD_DEMOAPP_CLIENT_ID, MSFT_GRAPH_DEFAULT_SCOPE);
-        response.getWriter().append("\n\nGraph access token for Demo application:\n" + TokenRequestHelper.decodePayload(graphTokenAccessToken));       
+        response.getWriter().append("\n\nGraph access token for Demo application:\n" + graphTokenAccessToken);       
     }
 }

@@ -2,7 +2,6 @@ package com.microsoft.samples;
 
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;

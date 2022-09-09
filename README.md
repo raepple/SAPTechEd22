@@ -1,5 +1,5 @@
 # Description
-This is the sample code for session XP160 at SAP TechEd 2022.
+This is the sample code for session XP106 at SAP TechEd 2022.
 
 # Deployment on Cloud Foundry
 To deploy the application, the following steps are required:
